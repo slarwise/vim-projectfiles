@@ -1,0 +1,39 @@
+Before:
+  unlet g:loaded_projectfiles g:projectfiles_filename
+  source plugin/projectfiles.vim
+  source autoload/Projectfiles.vim
+
+After:
+  let g:projectfiles_filename = '.projectfiles'
+
+Execute(Build database):
+  let expected = {
+    \ 'file1.erl': ['file1.erl', 'a/file1.erl'],
+    \ 'file2.erl': ['a/file2.erl'],
+    \ 'file3.erl': ['a/b/file3.erl']
+    \ }
+  AssertEqual expected, Projectfiles#GetDatabase()
+
+Execute(Get all paths for basename):
+  let expected = ['file1.erl', 'a/file1.erl']
+  AssertEqual expected, Projectfiles#GetPaths('file1.erl')
+
+Execute(Get all paths for a non-existent basename):
+  AssertEqual [], Projectfiles#GetPaths('nofile.erl')
+
+Execute(Get first path for basename):
+  AssertEqual 'file1.erl', Projectfiles#GetFirstPath('file1.erl')
+
+Execute(Get first path for non-existent basename):
+  AssertEqual '', Projectfiles#GetFirstPath('nofile.erl')
+
+Execute(Get paths matching pattern):
+  let expected = ['file1.erl', 'a/file1.erl', 'a/file2.erl']
+  AssertEqual expected, Projectfiles#GetPathsMatchingPattern('file[12]')
+
+Execute(Get paths matching pattern, no matches found):
+  AssertEqual [], Projectfiles#GetPathsMatchingPattern('file4')
+
+Execute(Database file not found):
+  let g:projectfiles_filename = 'nofile'
+  AssertEqual {}, Projectfiles#GetDatabase()
