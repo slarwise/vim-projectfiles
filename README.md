@@ -17,11 +17,9 @@ relative or an absolute path.
 These commands edits the specified filename using `edit`, `split` and `vsplit`
 respectively. Modifiers and bang works.
 
-```vim
-Projectfiles
-Sprojectfiles
-Vprojectfiles
-```
+- Projectfiles
+- Sprojectfiles
+- Vprojectfiles
 
 ## Examples
 
