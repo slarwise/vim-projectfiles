@@ -34,7 +34,15 @@ endfunction
 function! Projectfiles#GetPathsMatchingPattern(pattern) abort
     call Projectfiles#RefreshDatabase()
     let filtered_database = filter(deepcopy(s:database), 'v:key =~# a:pattern')
-    return flatten(values(filtered_database))
+    if exists('*flatten')
+        return flatten(values(filtered_database))
+    else
+        let paths = []
+        for path in values(filtered_database)
+            call extend(paths, p)
+        endfor
+        return paths
+    endif
 endfunction
 
 function! Projectfiles#CompleteList(arglead, cmdline, cursorpos) abort
