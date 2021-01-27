@@ -39,7 +39,7 @@ function! Projectfiles#GetPathsMatchingPattern(pattern) abort
     else
         let paths = []
         for path in values(filtered_database)
-            call extend(paths, p)
+            call extend(paths, path)
         endfor
         return paths
     endif
